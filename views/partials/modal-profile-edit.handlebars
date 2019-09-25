@@ -1,0 +1,114 @@
+<div class="modal fade" id="modalProfileEdit" tabindex="-1" role="dialog" aria-labelledby="modalProfileEditLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalProfileEditLabel">Edit Profile</h5>
+      </div>
+      <div class="modal-body">
+        <form id="edit_profile">
+          <div class="form-group">
+            <label for="edit_profile_name">Name</label>
+            <input id="edit_profile_name" class="form-control" type="text" />
+          </div>
+          <div class="form-group">
+            <label for="edit_profile_description">Description</label>
+            <input id="edit_profile_description" class="form-control" type="text" />
+          </div>
+          <div class="form-group">
+            <label for="edit_profile_address">Address</label>
+            <input id="edit_profile_address" class="form-control" type="text" />
+          </div>
+          <div class="form-group">
+            <label for="edit_profile_phone">Phone</label>
+            <input id="edit_profile_phone" class="form-control" type="text" />
+          </div>
+          <div class="form-group row">
+            <img id="edit_profile_image" class="col-sm-4" src="" alt="" />
+            <div class=" col-sm-8">
+                <label for="edit_profile_picture">Photo URL</label>
+                <input id="edit_profile_picture" class="form-control" type="text" />
+            </div>
+          </div>
+          <div class="form-group">
+            <img id="edit_profile_image" src="" alt="" />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button id="edit_profile_delete" type="button" class="btn btn-danger" onclick="edit_deleteProfile()">Delete profile</button>
+        <button id="edit_profile_submit" type="button" class="btn btn-primary" onclick="edit_submitProfile()">Save profile</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+
+function setProfile(el) {
+  var id = (jQuery(el).attr('data-pid'));
+  jQuery('#edit_profile_delete').attr('data-pid', id);
+  jQuery('#edit_profile_submit').attr('data-pid', id);
+  setProfileValues(id);
+}
+
+function setProfileValues(id) {
+  jQuery.ajax({
+    type: 'GET', url: '/api/v1/profiles/' + id,
+    contentType: 'application/json',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    success: function (profile) {
+        jQuery('#edit_profile_name').val(profile.name);
+        jQuery('#edit_profile_description').val(profile.description);
+        jQuery('#edit_profile_address').val(profile.address);
+        jQuery('#edit_profile_phone').val(profile.phone);
+        jQuery('#edit_profile_picture').val(profile.picture);
+        jQuery('#edit_profile_image').attr('src', profile.picture);
+    }
+  })
+}
+
+
+function edit_submitProfile() {
+  var id = jQuery('#edit_profile_submit').attr('data-pid');
+
+  var data = {
+    "name": jQuery('#edit_profile_name').val(),
+    "description":  jQuery('#edit_profile_description').val(),
+    "address":  jQuery('#edit_profile_address').val(),
+    "phone":  jQuery('#edit_profile_phone').val(),
+    "picture":  jQuery('#edit_profile_picture').val()
+  }
+
+  jQuery.ajax({
+    type: 'PUT', url: '/api/v1/profiles/' + id,
+    contentType: 'application/json',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: JSON.stringify(data),
+    success: function(response) {
+      location.reload();
+    }
+  })
+}
+
+function edit_deleteProfile() {
+  var id = jQuery('#edit_profile_delete').attr('data-pid');
+
+  jQuery.ajax({
+    type: 'DELETE', url: '/api/v1/profiles/' + id,
+    contentType: 'application/json',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    success: function(response) {
+      location.reload();
+    }
+  })
+}
+
+
+</script>

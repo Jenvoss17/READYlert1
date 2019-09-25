@@ -1,0 +1,211 @@
+<div id="colorlib-page">
+    <div class="container-wrap">
+        <a href="#" class="js-colorlib-nav-toggle colorlib-nav-toggle" data-toggle="collapse" data-target="#navbar"
+            aria-expanded="false" aria-controls="navbar"><i></i></a>
+        <aside id="colorlib-aside" role="complementary" class="border js-fullheight">
+            <div class="text-center">
+                <div id="user_image" class="author-img"></div>
+                <h1 id="colorlib-logo"><a id="user_name" href="#"></a></h1>
+            </div>
+            <nav id="colorlib-main-menu" role="navigation" class="navbar">
+                <div id="navbar" class="collapse">
+                    <ul>
+                        <li class="active"><a href="#" data-nav-section="home">Home</a></li>
+                        <li><a href="#" data-nav-section="about">Roll Call 🔈</a></li>
+                        <li><a href="#" data-nav-section="services">Profiles 🚶</a></li>
+                        <li><a href="#" data-nav-section="skills">Location 🌎</a></li>
+                        <li><a href="#" data-nav-section="education">Help Lines ☎️</a></li>
+                    </ul>
+                </div>
+            </nav>
+
+        </aside>
+
+        <div id="colorlib-main">
+            <section id="colorlib-hero" class="js-fullheight" data-section="home">
+                <div class="flexslider js-fullheight">
+                    <ul class="slides">
+                        <li style="background-image: url(images/readylert_background3.jpg);">
+                            <div class="overlay"></div>
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div
+                                        class="col-md-6 col-md-offset-3 col-md-pull-3 col-sm-12 col-xs-12 js-fullheight slider-text">
+                                        <div class="slider-text-inner js-fullheight">
+                                            <div class="title">
+                                                <div class="desc">
+                                                    <h1>READYlert</h1>
+                                                    <h2>Be Ready. Be Prepared.</h2>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+            </section>
+            <section class="colorlib-about" data-section="about">
+                <div class="colorlib-narrow-content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row row-bottom-padded-sm animate-box" data-animate-effect="fadeInLeft">
+                                <div class="col-md-12">
+                                    <div class="about-desc">
+                                        <span class="heading-meta">Roll Call</span>
+                                        <h2 class="colorlib-heading">Rosters</h2>
+                                        <p>View, add, update and delete your rosters.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="user_rosters" class="row"></div>
+                            <div class="row">
+                                <div class="col-md-12 animate-box" data-animate-effect="fadeInRight">
+                                    <div class="hire">
+                                        <h2>You have created <span id="roster_count"></span> rosters.</h2>
+                                        <button data-toggle="modal" data-target="#modalRosterAdd" class="btn-hire">Create Roster</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+
+            <section class="colorlib-services" data-section="services">
+                <div class="colorlib-narrow-content">
+                    <div class="row">
+                        <div class="col-md-6 col-md-offset-3 col-md-pull-3 animate-box"
+                            data-animate-effect="fadeInLeft">
+                            <span class="heading-meta">Profiles</span>
+                            <h2 class="colorlib-heading">All profiles</h2>
+                        </div>
+                    </div>
+                    <div id="user_profiles" class="row"></div>
+                    <div class="row">
+                        <div class="col-md-12 animate-box" data-animate-effect="fadeInRight">
+                            <div class="hire">
+                                {{!-- <h2>You have created <span id="roster_count"></span> rosters.</h2> --}}
+                                <button data-toggle="modal" data-target="#modalProfileAdd" class="btn-hire">Create Profile</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="colorlib-skills" data-section="skills">
+                <div class="colorlib-narrow-content">
+                    <div class="row">
+                        <div class="col-md-6 col-md-offset-3 col-md-pull-3 animate-box"
+                            data-animate-effect="fadeInLeft">
+                            <span class="heading-meta">Location</span>
+                            <h2 class="colorlib-heading animate-box">Share My Location</h2>
+                        </div>
+                    </div>
+                    <div class="row">
+                        {{> map}}
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 animate-box" data-animate-effect="fadeInRight">
+                            <div class="hire">
+                                <button data-toggle="modal" data-target="#modalShareLocation" class="btn-hire">Share Location</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="colorlib-education" data-section="education">
+                <div class="colorlib-narrow-content">
+                    <div class="row">
+                        <div class="col-md-6 col-md-offset-3 col-md-pull-3 animate-box"
+                            data-animate-effect="fadeInLeft">
+                            <span class="heading-meta">Help Lines</span>
+                            <h2 class="colorlib-heading animate-box">Emergency Numbers</h2>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 animate-box" data-animate-effect="fadeInLeft">
+                            <div class="fancy-collapse-panel">
+                                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading" role="tab" id="headingOne">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#accordion"
+                                                    href="#collapseOne" aria-expanded="true"
+                                                    aria-controls="collapseOne">Police
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel"
+                                            aria-labelledby="headingOne">
+                                            <div class="panel-body">
+                                                <a href="tel:911">911</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading" role="tab" id="headingTwo">
+                                            <h4 class="panel-title">
+                                                <a class="collapsed" data-toggle="collapse" data-parent="#accordion"
+                                                    href="#collapseTwo" aria-expanded="false"
+                                                    aria-controls="collapseTwo">KCPD Non-Emergency
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel"
+                                            aria-labelledby="headingTwo">
+                                            <div class="panel-body">
+                                                <a href="tel:(816) 234-5111">(816) 234-5111</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading" role="tab" id="headingThree">
+                                            <h4 class="panel-title">
+                                                <a class="collapsed" data-toggle="collapse" data-parent="#accordion"
+                                                    href="#collapseThree" aria-expanded="false"
+                                                    aria-controls="collapseThree">Poison Control
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseThree" class="panel-collapse collapse" role="tabpanel"
+                                            aria-labelledby="headingThree">
+                                            <div class="panel-body">
+                                                <a href="tel:(800) 222-1222">(800) 222-1222</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading" role="tab" id="headingFour">
+                                            <h4 class="panel-title">
+                                                <a class="collapsed" data-toggle="collapse" data-parent="#accordion"
+                                                    href="#collapseFour" aria-expanded="false"
+                                                    aria-controls="collapseFour">AAA
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseFour" class="panel-collapse collapse" role="tabpanel"
+                                            aria-labelledby="headingFour">
+                                            <div class="panel-body">
+                                                <a href="tel:(800) 222-4357">(800) 222-4357</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+{{> modal-roster-add}}
+{{> modal-roster-edit }}
+{{> modal-profile-add }}
+{{> modal-profile-edit }}
+{{> modal-share-location}}

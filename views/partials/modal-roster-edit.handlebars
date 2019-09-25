@@ -1,0 +1,145 @@
+<div class="modal fade" id="modalRosterEdit" tabindex="-1" role="dialog" aria-labelledby="modalRosterEditLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalRosterEditLabel">Edit Roster</h5>
+      </div>
+      <div class="modal-body">
+        <form id="edit_roster">
+          <div class="form-group">
+            <label for="edit_roster_name">Roster Name</label>
+            <input id="edit_roster_name" class="form-control" type="text" />
+          </div>
+          <div id="edit_roster_profiles"></div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button id="edit_roster_delete" type="button" class="btn btn-danger" onclick="edit_deleteRoster()">Delete roster</button>
+        <button id="edit_roster_submit" type="button" class="btn btn-primary" onclick="edit_submitRoster()">Save roster</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var editProfileOptions = []
+jQuery.ajax({
+  type: 'GET', url: '/api/v1/profiles/',
+  contentType: 'application/json',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  success: function (response) {
+    response.forEach(function(profile) {
+      editProfileOptions.push('<option value="' + profile.id + '">' + profile.name + '</option>')
+    })
+    editProfileOptions = editProfileOptions.join('');
+    jQuery('#edit_roster_select_0').append(editProfileOptions);
+  }
+})
+
+var currIndex = 0;
+function edit_addProfile(el) {
+  currIndex++;
+  jQuery('#edit_roster_profiles').append(
+    '<div id="edit_profile_' + currIndex + '" class="form-group clearfix">' +
+    '      <label for="roster_select_' + currIndex + '">Select Profile</label>' +
+    '      <select id="edit_roster_select_' + currIndex + '" class="edit-profile-select">' +
+    '        <option selected>Select User</option>' +
+    editProfileOptions +
+    '      </select>' +
+    '      <div style="float: right;">' +
+    '        <div class="btn btn-primary" data-index="' + currIndex + '" onclick="edit_addProfile(this)">+</div>' +
+    '        <div class="btn btn-default" data-index="' + currIndex + '" onclick="edit_deleteProfile(this)">-</div>' +
+    '      </div>' +
+    '    </div>'
+  )
+}
+
+function setRoster(el) {
+  var id = (jQuery(el).attr('data-rid'));
+  jQuery('#edit_roster_delete').attr('data-rid', id);
+  jQuery('#edit_roster_submit').attr('data-rid', id);
+  setRosterValues(id);
+}
+
+function setRosterValues(id) {
+  // clear values
+  currIndex = 0;
+  $('#edit_roster_profiles').empty(); 
+
+  jQuery.ajax({
+    type: 'GET', url: '/api/v1/rosters/' + id,
+    contentType: 'application/json',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    success: function (response) {
+      var firstItem = (response.length > 1) ? response[0] : response;
+      jQuery('#edit_roster_name').val(firstItem.title)
+      if (response.length > 1) {
+        response.forEach(function(profile, index) {
+          edit_addProfile();
+          jQuery('#edit_roster_select_' + (index + 1)).val(profile.id)
+        })
+      } else {
+        edit_addProfile();
+        jQuery('#edit_roster_select_1').val(response.id)
+      }
+    }
+  })
+}
+
+function edit_deleteProfile(el) {
+  var index = jQuery(el).attr('data-index');
+  jQuery('#edit_profile_' + index).remove();
+}
+
+function edit_submitRoster() {
+  var id = jQuery('#edit_roster_submit').attr('data-rid');
+
+  var data = {
+    "title": jQuery('#edit_roster_name').val(),
+    "created_by": userID,
+    "profiles": edit_getSelectedProfiles()
+  }
+
+  jQuery.ajax({
+    type: 'PUT', url: '/api/v1/rosters/' + id,
+    contentType: 'application/json',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: JSON.stringify(data),
+    success: function(response) {
+      location.reload();
+    }
+  })
+}
+
+function edit_deleteRoster() {
+  var id = jQuery('#edit_roster_submit').attr('data-rid');
+
+  jQuery.ajax({
+    type: 'DELETE', url: '/api/v1/rosters/' + id,
+    contentType: 'application/json',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    success: function(response) {
+      location.reload();
+    }
+  })
+}
+
+function edit_getSelectedProfiles() {
+  var profiles = [];
+  jQuery('.edit-profile-select').each(function(index, profile) {
+    profiles.push(parseInt(jQuery(this).children("option:selected").val()))
+  })
+  console.log(profiles)
+  return profiles;
+}
+
+</script>

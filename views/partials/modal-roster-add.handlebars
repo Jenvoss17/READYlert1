@@ -1,0 +1,104 @@
+<div class="modal fade" id="modalRosterAdd" tabindex="-1" role="dialog" aria-labelledby="modalRosterAddLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalRosterAddLabel">Add Roster</h5>
+      </div>
+      <div class="modal-body">
+        <form id="create_roster">
+          <div class="form-group">
+            <label for="add_roster_name">Roster Name</label>
+            <input id="add_roster_name" class="form-control" type="text" />
+          </div>
+          <div id="profile_0" class="form-group clearfix">
+            <label for="add_roster_select_0">Select Profile</label>
+            <select id="add_roster_select_0" class="add-profile-select">
+              <option selected>Select User</option>
+            </select>
+            <div style="float: right;">
+              <div class="btn btn-primary" data-index="0" onclick="add_addProfile(this)">+</div>
+              <div class="btn btn-default disabled" data-index="0" onclick="null;">-</div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="add_submitRoster()">Save roster</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var profileOptions = [];
+
+jQuery.ajax({
+  type: 'GET', url: '/api/v1/profiles/',
+  contentType: 'application/json',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  success: function (response) {
+    response.forEach(function(profile) {
+      profileOptions.push('<option value="' + profile.id + '">' + profile.name + '</option>')
+    })
+    profileOptions = profileOptions.join('');
+    jQuery('#add_roster_select_0').append(profileOptions);
+  }
+})
+
+var currIndex = 0;
+function add_addProfile(el) {
+  currIndex++;
+  jQuery('#create_roster').append(
+    '   <div id="profile_' + currIndex + '" class="form-group clearfix">' +
+    '      <label for="add_roster_select_' + currIndex + '">Select Profile</label>' +
+    '      <select id="add_roster_select_' + currIndex + '" class="add-profile-select">' +
+    '        <option selected>Select User</option>' +
+    profileOptions +
+    '      </select>' +
+    '      <div style="float: right;">' +
+    '        <div class="btn btn-primary" data-index="' + currIndex + '" onclick="add_addProfile(this)">+</div>' +
+    '        <div class="btn btn-default" data-index="' + currIndex + '" onclick="add_deleteProfile(this)">-</div>' +
+    '      </div>' +
+    '    </div>'
+  )
+}
+
+function add_deleteProfile(el) {
+  var index = jQuery(el).attr('data-index');
+  jQuery('#add_profile_' + index).remove();
+}
+
+function add_submitRoster() {
+  var data = {
+    "title": jQuery('#add_roster_name').val(),
+    "created_by": userID,
+    "profiles": add_getSelectedProfiles()
+  }
+
+  console.log(data);
+
+  jQuery.ajax({
+    type: 'POST', url: '/api/v1/rosters/',
+    contentType: 'application/json',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: JSON.stringify(data),
+    success: function(response) {
+      location.reload();
+    }
+  })
+}
+
+function add_getSelectedProfiles() {
+  var profiles = [];
+  jQuery('.add-profile-select').each(function(index, profile) {
+    profiles.push(parseInt(jQuery(this).children("option:selected").val()))
+  })
+  return profiles;
+}
+
+</script>
