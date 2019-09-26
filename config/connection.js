@@ -1,7 +1,14 @@
 var mysql = require("mysql");
 var connection;
 if (process.env.JAWSDB_URL) {
-    connection = mysql.createConnection(process.env.JAWSDB_URL);
+    connection = mysql.createConnection({
+        host: process.env.PROD_DATABASE_HOST,
+        port: process.env.PROD_DATABASE_PORT,
+        user: process.env.PROD_DATABASE_USER,
+        password: process.env.PROD_DATABASE_PASS,
+        database: process.env.PROD_DATABASE_NAME,
+        multipleStatements: true
+    });
 } else {
     connection = mysql.createConnection({
         host: process.env.DATABASE_HOST,

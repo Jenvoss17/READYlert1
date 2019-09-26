@@ -36,7 +36,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button id="edit_profile_delete" type="button" class="btn btn-danger" onclick="edit_deleteProfile()">Delete profile</button>
+        <button id="edit_profile_delete" type="button" class="btn btn-danger" onclick="edit_removeProfile()">Delete profile</button>
         <button id="edit_profile_submit" type="button" class="btn btn-primary" onclick="edit_submitProfile()">Save profile</button>
       </div>
     </div>
@@ -95,7 +95,7 @@ function edit_submitProfile() {
   })
 }
 
-function edit_deleteProfile() {
+function edit_removeProfile() {
   var id = jQuery('#edit_profile_delete').attr('data-pid');
 
   jQuery.ajax({
